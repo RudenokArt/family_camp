@@ -4,6 +4,20 @@
  */
 class ACF_class {
 
+	public static function getListWithMeta($post_type, $meta_key, $orderby='date', $order='ASC') {
+		$posts = self::getList($post_type, $meta_key, $orderby, $order);
+		$meta = self::wpDbRe('SELECT * FROM `wp_postmeta` WHERE `meta_key`="'.$meta_key.'"');
+		foreach ($posts as $key => $value) {
+			foreach ($meta as $key1 => $value1) {
+				if ($value['ID'] == $value1->post_id) {
+					$posts[$key]['season'] = $value1->meta_value;
+				}
+			}
+			
+		}
+		return $posts;
+	}
+
 	
 	public static function getList ($post_type, $orderby='date', $order='ASC') {
 
@@ -45,7 +59,9 @@ class ACF_class {
 			$item = [];
 			$item['ID'] = $post->ID;
 			$item['post_title'] = $post->post_title;
-			$item['post_content'] = sanitize_textarea_field($post->post_content);
+			$item['post_content'] = sanitize_text_field($post->post_content);
+			
+			// $item['post_content'] = $post->post_content;
 			foreach ($metadata as $key => $value) {
 				if ($value->post_id == $post->ID) {
 					foreach ($images as $i => $img) {
