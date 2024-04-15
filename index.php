@@ -8,9 +8,9 @@ $arrivals = ACF_class::getListWithMeta('arrival', 'arrival_season')
 	<div class="pt-5 pb-5">
 
 
-			<template v-if="currentStep==1">
-				<form action="" class="card" v-on:submit.prevent="currentStep++">
-					<div class="card-header">
+		<template v-if="currentStep==1">
+			<form action="" class="card" v-on:submit.prevent="currentStep++">
+				<div class="card-header">
 					<h2 class="text-secondary">Регистрация и подписание договора</h2>
 				</div>
 				<div class="card-body">
@@ -25,12 +25,12 @@ $arrivals = ACF_class::getListWithMeta('arrival', 'arrival_season')
 				v-bind:currentstep="currentStep"
 				v-on:previoussteptrigger="currentStep--"
 				></contract_quiz-footer>
-				</form>				
-			</template>
-			
-			<template v-if="currentStep==2">
-				<form action="" class="card" v-on:submit.prevent="currentStep++">
-					<div class="card-header">
+			</form>				
+		</template>
+
+		<template v-if="currentStep==2">
+			<form action="" class="card" v-on:submit.prevent="currentStep++">
+				<div class="card-header">
 					<h2 class="text-secondary">Выбор сезона:</h2>
 				</div>
 				<div class="card-body">
@@ -71,13 +71,13 @@ $arrivals = ACF_class::getListWithMeta('arrival', 'arrival_season')
 				v-bind:currentstep="currentStep"
 				v-on:previoussteptrigger="currentStep--"
 				></contract_quiz-footer>
-				</form>
-				
-			</template>
+			</form>
 
-			<template v-if="currentStep==3">
-				<form action="" class="card" v-on:submit.prevent="currentStep++">
-					<div class="card-header">
+		</template>
+
+		<template v-if="currentStep==3">
+			<form action="" class="card" v-on:submit.prevent="currentStep++">
+				<div class="card-header">
 					<h2 class="text-secondary">Выбор заезда:</h2>
 				</div>
 				<div class="card-body">
@@ -120,13 +120,13 @@ $arrivals = ACF_class::getListWithMeta('arrival', 'arrival_season')
 				v-bind:currentstep="currentStep"
 				v-on:previoussteptrigger="currentStep--"
 				></contract_quiz-footer>
-				</form>
-				
-			</template>
+			</form>
 
-			<template v-if="currentStep==4">
-				<form action="" class="card" v-on:submit.prevent="currentStep++">
-					<div class="card-header">
+		</template>
+
+		<template v-if="currentStep==4">
+			<form action="" class="card" v-on:submit.prevent="currentStep++">
+				<div class="card-header">
 					<h2 class="text-secondary">Персональные данные для заполнения договора:</h2>
 				</div>
 				<div class="card-body">
@@ -135,24 +135,24 @@ $arrivals = ACF_class::getListWithMeta('arrival', 'arrival_season')
 						<input type="text" name="customer[fio]" class="form-control" required>
 					</div>
 					<div class="p-1">
-						<div class="d-flex flex-wrap">
-							<div class="p-1">
+						<div class="row">
+							<div class="pt-1 col-lg-6 col-md-6 col-sm-12 col-12">
 								Дата рождения:
 								<input type="date" name="customer[date]" class="form-control" required>
 							</div>
-							<div class="p-1">
+							<div class="pt-1 col-lg-6 col-md-6 col-sm-12 col-12">
 								Email:
 								<input type="email" name="customer[mail]" class="form-control" required>
 							</div>
-							<div class="p-1">
+							<div class="pt-1 col-lg-6 col-md-6 col-sm-12 col-12">
 								Телефон:
 								<input type="text" name="customer[phone]" class="form-control" required>
 							</div>
-							<div class="p-1">
+							<div class="pt-1 col-lg-6 col-md-6 col-sm-12 col-12">
 								Серия и номер паспорта:
 								<input type="text" name="customer[passport]" class="form-control" required>
 							</div>
-							<div class="p-1">
+							<div class="pt-1 col-lg-6 col-md-6 col-sm-12 col-12">
 								Стоимость программы: 
 								<br>
 								<i>(Сумму укажите из Расчета, который вам прислали ранее)</i>
@@ -170,27 +170,54 @@ $arrivals = ACF_class::getListWithMeta('arrival', 'arrival_season')
 				v-bind:currentstep="currentStep"
 				v-on:previoussteptrigger="currentStep--"
 				></contract_quiz-footer>
-				</form>
-				
-			</template>
+			</form>
+		</template>
 
-
-
-			<div class="p-5">
-				<div class="progress" role="progressbar">
-					<div class="progress-bar bg-warning" v-bind:style="rangeStyle"></div>
+		<template v-if="currentStep==5">
+			<form action="" class="card" v-on:submit.prevent="currentStep++">
+				<div class="card-header">
+					<h2 class="text-secondary">Список отдыхающих:</h2>
 				</div>
-			</div>
-			<pre>{{arrival}}</pre>
-			<pre>{{season}}</pre>
+				<div class="card-body">
 
-		</form>
+					<template v-for="(item, index) in touristsQuantityArr">
+						<div class="row pt-1" v-if="touristsQuantity>=item">
+							<div class="col-lg-8 col-md-8 col-sm-12 col-12">
+								{{item}}) ФИО:
+								<input type="text" class="form-control" required>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-12 col-12">
+								Дата рождения:
+								<input type="date" class="form-control" required>
+							</div>
+						</div>
+					</template>
+					<div class="p-1 d-flex justify-content-around">
+						<button v-on:click="touristsQuantityAdd" type="button" class="btn btn-outline-success">
+							<i class="fa fa-plus" aria-hidden="true"></i>
+						</button>
+						<button 
+						v-if="touristsQuantity>1"
+						v-on:click="touristsQuantityDec"
+						type="button"
+						class="btn btn-outline-danger">
+						<i class="fa fa-minus" aria-hidden="true"></i></button>
+					</div>
+				</div>
+				<contract_quiz-footer
+				v-bind:stepsquantity="stepsQuantity"
+				v-bind:currentstep="currentStep"
+				v-on:previoussteptrigger="currentStep--"
+				></contract_quiz-footer>
+			</form>				
+		</template>
 
-	</div>
+	</form>
+
+</div>
 </div>
 
 
-<pre><?php print_r($arrivals); ?></pre>
 
 <script>
 	var ContractQuiz = Vue.createApp({
@@ -201,12 +228,23 @@ $arrivals = ACF_class::getListWithMeta('arrival', 'arrival_season')
 				season: false,
 				arrivalsList: JSON.parse('<?php echo json_encode($arrivals); ?>'),
 				arrival: false,
+				touristsQuantity: 1,
 			};
 		},
 		methods: {
 			formValidation: function () {
 				console.log('formValidation');
-			}
+			},
+			touristsQuantityAdd: function () {
+				if (this.touristsQuantity < 10) {
+					this.touristsQuantity++;
+				}
+			},
+			touristsQuantityDec: function () {
+				if (this.touristsQuantity > 1) {
+					this.touristsQuantity--;
+				}
+			},
 		},
 
 		watch: {
@@ -216,6 +254,13 @@ $arrivals = ACF_class::getListWithMeta('arrival', 'arrival_season')
 		},
 
 		computed: {
+			touristsQuantityArr: function () {
+				var arr = [];
+				for (var i = 0; i < 10; i++) {
+					arr[i] = i + 1;
+				}
+				return arr;
+			},
 			rangeStyle: function () {
 				var width = this.currentStep / this.stepsQuantity * 100;
 				width = width.toFixed(0);
