@@ -22,7 +22,7 @@ $company_links = ACF_class::getList('company_links');
 	<link rel="shortcut icon" href="<?php echo  get_site_icon_url();?>">
 	<link rel="shortcut icon" type="image/x-icon" href="<?php echo  get_site_icon_url();?>">
 
-	<title>Document</title>
+	<title><?php echo get_bloginfo(); ?></title>
 </head>
 <body>
 

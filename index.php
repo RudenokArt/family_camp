@@ -214,6 +214,12 @@ $arrivals = ACF_class::getListWithMeta('arrival', 'arrival_season')
 
 	</form>
 
+	<div class="p-5">
+		<div class="progress" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+			<div class="progress-bar bg-warning" v-bind:style="progressStyle"></div>
+		</div>
+	</div>
+
 </div>
 </div>
 
@@ -254,6 +260,13 @@ $arrivals = ACF_class::getListWithMeta('arrival', 'arrival_season')
 		},
 
 		computed: {
+			progressStyle: function () {
+				var re = (this.currentStep) / this.stepsQuantity * 100;
+				re = re.toFixed(0);
+				re = 'width: ' + re + '%';
+				return re;
+			},
+
 			touristsQuantityArr: function () {
 				var arr = [];
 				for (var i = 0; i < 10; i++) {
