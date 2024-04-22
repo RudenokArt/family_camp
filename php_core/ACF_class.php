@@ -4,18 +4,30 @@
  */
 class ACF_class {
 
-	public static function getListWithMeta($post_type, $meta_key, $orderby='date', $order='ASC') {
-		$posts = self::getList($post_type, $meta_key, $orderby, $order);
-		$meta = self::wpDbRe('SELECT * FROM `wp_postmeta` WHERE `meta_key`="'.$meta_key.'"');
-		foreach ($posts as $key => $value) {
-			foreach ($meta as $key1 => $value1) {
-				if ($value['ID'] == $value1->post_id) {
-					$posts[$key]['season'] = $value1->meta_value;
-				}
-			}
-			
-		}
-		return $posts;
+	public static function getArrivalsList () {
+
+		$arrivals = self::wpDbRe(
+			'SELECT 
+			`ID`, 
+			`post_title`,
+			`wp_term_relationships`.`term_taxonomy_id`,
+			`wp_terms`.`name` AS `taxonomy_name`,
+			`wp_term_taxonomy`.`taxonomy` AS `taxonomy_slug`,
+			`wp_termmeta`.`meta_key` AS `taxonomy_file_type`,
+			`wp_termmeta`.`meta_value` AS `taxonomy_file_id`
+			FROM `wp_posts` 
+			JOIN `wp_term_relationships` ON `wp_posts`.`ID` = `wp_term_relationships`.`object_id`
+			JOIN `wp_term_taxonomy` ON `wp_term_relationships`.`term_taxonomy_id` = `wp_term_taxonomy`.`term_taxonomy_id`
+			JOIN `wp_terms` ON `wp_term_relationships`.`term_taxonomy_id` = `wp_terms`.`term_id`
+			JOIN `wp_termmeta` ON `wp_term_relationships`.`term_taxonomy_id` = `wp_termmeta`.`term_id`
+			WHERE `post_type`="arrival" AND `post_status`="publish"
+			AND (`wp_term_taxonomy`.`taxonomy`="season" OR `wp_term_taxonomy`.`taxonomy`="direction")
+			AND (`wp_termmeta`.`meta_key`="image" OR `wp_term_taxonomy`.`taxonomy`="contract")
+			ORDER BY `post_date` ASC'
+		);
+
+		
+		return $arrivals;
 	}
 
 	
