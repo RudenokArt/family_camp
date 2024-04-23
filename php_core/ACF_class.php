@@ -26,7 +26,6 @@ class ACF_class {
 			ORDER BY `post_date` ASC'
 		);
 
-		
 		return $arrivals;
 	}
 
