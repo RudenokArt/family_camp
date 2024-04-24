@@ -4,26 +4,73 @@
  */
 class ACF_class {
 
+	public static function getDirectionsList () {
+		$directions = self::wpDbRe(
+			'SELECT 
+			`wp_term_taxonomy`.`term_taxonomy_id`,
+			`wp_term_taxonomy`.`term_id`,
+			`wp_term_taxonomy`.`taxonomy`,
+			`wp_term_taxonomy`.`description`,
+			`wp_terms`.`name`,
+			`wp_termmeta`.`meta_key`,
+			`wp_termmeta`.`meta_value`,
+			`wp_posts`.`guid`
+			FROM `wp_term_taxonomy`
+			JOIN `wp_terms` ON `wp_term_taxonomy`.`term_id` = `wp_terms`.`term_id`
+			JOIN `wp_termmeta` ON `wp_term_taxonomy`.`term_id` = `wp_termmeta`.`term_id`
+			JOIN `wp_posts` ON `wp_termmeta`.`meta_value` = `wp_posts`.`ID`
+			WHERE `wp_term_taxonomy`.`taxonomy`="direction"
+			AND (`wp_termmeta`.`meta_key` = "image" OR `wp_termmeta`.`meta_key` = "contract")'
+		);
+		$arr = [];
+		foreach ($directions as $key => $value) {
+			$arr[$value->term_id]['term_taxonomy_id'] = $value->term_taxonomy_id;
+			$arr[$value->term_id]['term_id'] = $value->term_id;
+			$arr[$value->term_id]['taxonomy'] = $value->taxonomy;
+			$arr[$value->term_id]['description'] = $value->description;
+			$arr[$value->term_id]['name'] = $value->name;
+			$arr[$value->term_id][$value->meta_key] = $value->guid;
+		}
+		return $arr;
+	}
+
+	public static function getSeasonsList () {
+		$seasons = self::wpDbRe(
+			'SELECT 
+			`wp_term_taxonomy`.`term_taxonomy_id`,
+			`wp_term_taxonomy`.`term_id`,
+			`wp_term_taxonomy`.`taxonomy`,
+			`wp_term_taxonomy`.`description`,
+			`wp_terms`.`name`,
+			`wp_termmeta`.`meta_key`,
+			`wp_termmeta`.`meta_value`,
+			`wp_posts`.`guid`
+			FROM `wp_term_taxonomy`
+			JOIN `wp_terms` ON `wp_term_taxonomy`.`term_id` = `wp_terms`.`term_id`
+			JOIN `wp_termmeta` ON `wp_term_taxonomy`.`term_id` = `wp_termmeta`.`term_id`
+			JOIN `wp_posts` ON `wp_termmeta`.`meta_value` = `wp_posts`.`ID`
+			WHERE `wp_term_taxonomy`.`taxonomy`="season"
+			AND `wp_termmeta`.`meta_key` = "image"'
+		);
+		return $seasons;
+	}
+
 	public static function getArrivalsList () {
 
 		$arrivals = self::wpDbRe(
 			'SELECT 
-			`ID`, 
-			`post_title`,
+			`wp_posts`.`ID`, 
+			`wp_posts`.`post_title`,
 			`wp_term_relationships`.`term_taxonomy_id`,
 			`wp_terms`.`name` AS `taxonomy_name`,
-			`wp_term_taxonomy`.`taxonomy` AS `taxonomy_slug`,
-			`wp_termmeta`.`meta_key` AS `taxonomy_file_type`,
-			`wp_termmeta`.`meta_value` AS `taxonomy_file_id`
+			`wp_term_taxonomy`.`taxonomy` AS `taxonomy_slug`
 			FROM `wp_posts` 
 			JOIN `wp_term_relationships` ON `wp_posts`.`ID` = `wp_term_relationships`.`object_id`
 			JOIN `wp_term_taxonomy` ON `wp_term_relationships`.`term_taxonomy_id` = `wp_term_taxonomy`.`term_taxonomy_id`
 			JOIN `wp_terms` ON `wp_term_relationships`.`term_taxonomy_id` = `wp_terms`.`term_id`
-			JOIN `wp_termmeta` ON `wp_term_relationships`.`term_taxonomy_id` = `wp_termmeta`.`term_id`
-			WHERE `post_type`="arrival" AND `post_status`="publish"
+			WHERE `wp_posts`.`post_type`="arrival" AND `wp_posts`.`post_status`="publish"
 			AND (`wp_term_taxonomy`.`taxonomy`="season" OR `wp_term_taxonomy`.`taxonomy`="direction")
-			AND (`wp_termmeta`.`meta_key`="image" OR `wp_term_taxonomy`.`taxonomy`="contract")
-			ORDER BY `post_date` ASC'
+			ORDER BY `wp_posts`.`post_date` ASC'
 		);
 
 		return $arrivals;
