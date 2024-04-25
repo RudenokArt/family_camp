@@ -4,6 +4,25 @@
  */
 class ACF_class {
 
+	public static function getFormSteps () {
+		$posts = get_posts([
+			'category_name' => 'step_by_step_form',
+			'post_status' => 'publish',
+			'numberposts' => -1,
+			'order' => 'ASC',
+			'orderby' => 'name',
+		]);
+		foreach ($posts as $key => $value) {
+			$arr[] = [
+				'ID' => $value->ID,
+				'post_title' => $value->post_title,
+				'post_content' => sanitize_text_field($value->post_content),
+				'post_name' => $value->post_name,
+			];
+		}
+		return $arr;
+	}
+
 	public static function getDirectionsList () {
 		$directions = self::wpDbRe(
 			'SELECT 
@@ -73,7 +92,14 @@ class ACF_class {
 			ORDER BY `wp_posts`.`post_date` ASC'
 		);
 
-		return $arrivals;
+		$arr = [];
+		foreach ($arrivals as $key => $value) {
+			$arr[$value->ID]['ID'] = $value->ID;
+			$arr[$value->ID]['post_title'] = $value->post_title;
+			$arr[$value->ID][$value->taxonomy_slug] = $value->taxonomy_name;
+		}
+
+		return $arr;
 	}
 
 	
