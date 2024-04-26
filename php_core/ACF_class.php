@@ -35,9 +35,9 @@ class ACF_class {
 			`wp_termmeta`.`meta_value`,
 			`wp_posts`.`guid`
 			FROM `wp_term_taxonomy`
-			JOIN `wp_terms` ON `wp_term_taxonomy`.`term_id` = `wp_terms`.`term_id`
-			JOIN `wp_termmeta` ON `wp_term_taxonomy`.`term_id` = `wp_termmeta`.`term_id`
-			JOIN `wp_posts` ON `wp_termmeta`.`meta_value` = `wp_posts`.`ID`
+			LEFT JOIN `wp_terms` ON `wp_term_taxonomy`.`term_id` = `wp_terms`.`term_id`
+			LEFT JOIN `wp_termmeta` ON `wp_term_taxonomy`.`term_id` = `wp_termmeta`.`term_id`
+			LEFT JOIN `wp_posts` ON `wp_termmeta`.`meta_value` = `wp_posts`.`ID`
 			WHERE `wp_term_taxonomy`.`taxonomy`="direction"
 			AND (`wp_termmeta`.`meta_key` = "image" OR `wp_termmeta`.`meta_key` = "contract")'
 		);
@@ -65,9 +65,9 @@ class ACF_class {
 			`wp_termmeta`.`meta_value`,
 			`wp_posts`.`guid`
 			FROM `wp_term_taxonomy`
-			JOIN `wp_terms` ON `wp_term_taxonomy`.`term_id` = `wp_terms`.`term_id`
-			JOIN `wp_termmeta` ON `wp_term_taxonomy`.`term_id` = `wp_termmeta`.`term_id`
-			JOIN `wp_posts` ON `wp_termmeta`.`meta_value` = `wp_posts`.`ID`
+			LEFT JOIN `wp_terms` ON `wp_term_taxonomy`.`term_id` = `wp_terms`.`term_id`
+			LEFT JOIN `wp_termmeta` ON `wp_term_taxonomy`.`term_id` = `wp_termmeta`.`term_id`
+			LEFT JOIN `wp_posts` ON `wp_termmeta`.`meta_value` = `wp_posts`.`ID`
 			WHERE `wp_term_taxonomy`.`taxonomy`="season"
 			AND `wp_termmeta`.`meta_key` = "image"'
 		);

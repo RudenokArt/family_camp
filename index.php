@@ -16,8 +16,42 @@ $steps = ACF_class::getFormSteps();
 					</div>
 				</div>
 				<div class="card-body">
-					<input type="text" required>
-					<div class="text-center"><?php echo $value['post_content'] ?></div>
+					<div class="text-center"><?php echo $value['post_content'];?></div>
+					<div class="container">
+						<div class="row">
+							<template v-if="currentStep==2">
+								<?php foreach ($seasons as $key1 => $value1): ?>
+									<div class="col-lg-6 col-md-6 col-sm-12 col-12 pt-3">
+										<input
+										type="radio" class="btn-check"
+										name="options-outlined"
+										id="seasoncheckbox-<?php echo $value1->name; ?>"
+										autocomplete="off" required>
+										<label
+										class="btn btn-lg btn-outline-warning w-100 pb-4"
+										for="seasoncheckbox-<?php echo $value1->name; ?>">
+										<?php echo $value1->name; ?>
+										<?php if ($value1->guid): ?>
+											<div style="background-image: url(<?php echo $value1->guid; ?>)"
+												class="main-seasons-item-image pt-5">
+												<small>
+													<i><?php echo $value1->description; ?></i>
+												</small>
+											</div>
+										<?php else: ?>
+											<div class="main-seasons-item-image pt-5">
+												<small>
+													<i><?php echo $value1->description; ?></i>
+												</small>
+											</div>
+										<?php endif ?>
+									</label></div>
+								<?php endforeach ?>
+							</template>
+
+						</div>
+					</div>
+
 				</div>
 			</template>
 		<?php endforeach ?>		
@@ -61,8 +95,10 @@ $steps = ACF_class::getFormSteps();
 	StepByStepForm.mount('#step_by_step_form');
 </script>
 
-<pre><?php print_r($steps) ?></pre>
+
 <pre><?php print_r($seasons) ?></pre>
+<pre><?php print_r($steps) ?></pre>
+
 <pre><?php print_r($directions) ?></pre>
 <pre><?php print_r($arrivals) ?></pre>
 
