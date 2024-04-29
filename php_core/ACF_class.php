@@ -96,7 +96,8 @@ class ACF_class {
 		foreach ($arrivals as $key => $value) {
 			$arr[$value->ID]['ID'] = $value->ID;
 			$arr[$value->ID]['post_title'] = $value->post_title;
-			$arr[$value->ID][$value->taxonomy_slug] = $value->taxonomy_name;
+			// $arr[$value->ID][$value->taxonomy_slug] = $value->taxonomy_name;
+			$arr[$value->ID][$value->taxonomy_slug][$value->term_taxonomy_id] = $value->taxonomy_name;
 		}
 
 		return $arr;
