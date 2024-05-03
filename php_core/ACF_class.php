@@ -80,6 +80,7 @@ class ACF_class {
 			'SELECT 
 			`wp_posts`.`ID`, 
 			`wp_posts`.`post_title`,
+			`wp_posts`.`post_content`,
 			`wp_term_relationships`.`term_taxonomy_id`,
 			`wp_terms`.`name` AS `taxonomy_name`,
 			`wp_term_taxonomy`.`taxonomy` AS `taxonomy_slug`
@@ -96,6 +97,7 @@ class ACF_class {
 		foreach ($arrivals as $key => $value) {
 			$arr[$value->ID]['ID'] = $value->ID;
 			$arr[$value->ID]['post_title'] = $value->post_title;
+			$arr[$value->ID]['post_content'] = $value->post_content;
 			// $arr[$value->ID][$value->taxonomy_slug] = $value->taxonomy_name;
 			$arr[$value->ID][$value->taxonomy_slug][$value->term_taxonomy_id] = $value->taxonomy_name;
 		}
