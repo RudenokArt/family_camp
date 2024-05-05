@@ -1,4 +1,14 @@
-<?php 
+<?php
+if (isset($_POST['StepByStepFormData'])) {
+	$re = [
+		'alert' => [
+			'color' => 'success',
+			'message' => 'Заявка отправлена администратору!',
+		],
+	];
+	echo json_encode($re);
+	exit();
+}
 $company_phones = ACF_class::getList('company_phones');
 $company_links = ACF_class::getList('company_links');
 ?>

@@ -63,10 +63,10 @@ $steps = ACF_class::getFormSteps();
 
 					<template v-if="currentStep==3">
 						<div class="row justify-content-center">
-							<div class="col-lg-6 col-md-9 col-sm-12 col-12">
-								<?php foreach ($directions as $key => $value): ?>
+							<?php foreach ($directions as $key => $value): ?>
+								<div class="col-lg-4 col-md-4 col-sm-12 col-12">
 									<div class="p-1">
-										<input 
+										<input
 										value="<?php echo $value['term_id']; ?>"
 										v-model="direction"
 										type="radio"
@@ -77,23 +77,21 @@ $steps = ACF_class::getFormSteps();
 										<label
 										for="directionradio-<?php echo $value['term_id']; ?>"
 										class="btn btn-lg btn-outline-warning w-100">
-										<div class="row">
-											<div class="col-lg-3 col-md-3 col-sm-12 col-12">
-												<?php if ($value['image']): ?>
-													<img src="<?php echo $value['image'] ?>" class="w-100" alt="">
-												<?php else: ?>
-													<div class="p-5"></div>
-												<?php endif ?>
-											</div>
-											<div class="col-lg-9 col-md-9 col-sm-12 col-12">
-												<?php echo $value['name']; ?>
-												<br>
+										<div class="p-1">
+											<?php echo $value['name']; ?>
+											<div
+											style="background-image: url(<?php echo $value['image'] ?>);"
+											class="main-directions-item-image"></div>
+											<?php if ($value['description']): ?>
 												<small><i><?php echo $value['description']; ?></i></small>
-											</div>
+											<?php else: ?>
+												<br>
+											<?php endif ?>
+											
 										</div></label>
 									</div>
-								<?php endforeach ?>
-							</div>							
+								</div>							
+							<?php endforeach ?>
 						</div>						
 					</template>
 
@@ -114,77 +112,128 @@ $steps = ACF_class::getFormSteps();
 										for="directionradio-<?php echo $value['ID']; ?>"
 										class="btn btn-lg btn-outline-warning w-100">
 										<div><?php echo $value['post_title']; ?></div>
-										<small><i><?php echo $value['post_content']; ?></i></small>
-									</label>
+										<small><i><?php echo $value['post_content']; ?></i></small></label>
+									</div>
+								<?php endforeach ?>
+							</div>							
+						</div>						
+					</template>
+
+					<template v-if="currentStep==5">
+						<div class="p-1">
+							ФИО:
+							<input v-model="customer.fio" type="text" class="form-control" required>
+						</div>
+						<div class="p-1">
+							<div class="row">
+								<div class="pt-1 col-lg-6 col-md-6 col-sm-12 col-12">
+									Дата рождения:
+									<input type="date" v-model="customer.name" class="form-control" required>
 								</div>
-							<?php endforeach ?>
-						</div>							
-					</div>						
-				</template>
-
-				<template v-if="currentStep==5">
-
-					<div class="p-1">
-						ФИО:
-						<input type="text" name="customer[fio]" class="form-control" required>
-					</div>
-					<div class="p-1">
-						<div class="row">
-							<div class="pt-1 col-lg-6 col-md-6 col-sm-12 col-12">
-								Дата рождения:
-								<input type="date" name="customer[date]" class="form-control" required>
-							</div>
-							<div class="pt-1 col-lg-6 col-md-6 col-sm-12 col-12">
-								Email:
-								<input type="email" name="customer[mail]" class="form-control" required>
-							</div>
-							<div class="pt-1 col-lg-6 col-md-6 col-sm-12 col-12">
-								Телефон:
-								<input type="text" name="customer[phone]" class="form-control" required>
-							</div>
-							<div class="pt-1 col-lg-6 col-md-6 col-sm-12 col-12">
-								Серия и номер паспорта:
-								<input type="text" name="customer[passport]" class="form-control" required>
-							</div>
-							<div class="pt-1 col-lg-6 col-md-6 col-sm-12 col-12">
-								Стоимость программы: 
-								<br>
-								<i>(Сумму укажите из Расчета, который вам прислали ранее)</i>
-								<input type="number" name="customer[price]" class="form-control" required>
+								<div class="pt-1 col-lg-6 col-md-6 col-sm-12 col-12">
+									Email:
+									<input type="email" v-model="customer.mail" class="form-control" required>
+								</div>
+								<div class="pt-1 col-lg-6 col-md-6 col-sm-12 col-12">
+									Телефон:
+									<input type="text" v-model="customer.phone" class="form-control" required>
+								</div>
+								<div class="pt-1 col-lg-6 col-md-6 col-sm-12 col-12">
+									Серия и номер паспорта:
+									<input type="text" v-model="customer.passport" class="form-control" required>
+								</div>
+								<div class="pt-1 col-lg-6 col-md-6 col-sm-12 col-12">
+									Стоимость программы: 
+									<br>
+									<i>(Сумму укажите из Расчета, который вам прислали ранее)</i>
+									<input type="number" v-model="customer.price" class="form-control" required>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="p-1">
-						Адрес:
-						<input type="text" name="customer[address]" class="form-control" required>
-					</div>
-					
-				</template>
+						<div class="p-1">
+							Адрес:
+							<input type="text" v-model="customer.address" class="form-control" required>
+						</div>
+					</template>
 
+					<template v-if="currentStep==6">
+						<?php for ($i=0; $i < 10; $i++): ?>
+							<div v-if="<?php echo $i ?> <= touristsQuantity" class="row pt-1">
+								<div class="col-lg-8 col-md-8 col-sm-12 col-12">
+									<?php echo ($i + 1) ?>) ФИО:
+									<input v-model="tourists[<?php echo $i;?>].name" <?php if ($i==0): ?>
+									required
+									<?php endif ?> type="text" class="form-control">
+								</div>
+								<div class="col-lg-4 col-md-4 col-sm-12 col-12">
+									Дата рождения:
+									<input v-model="tourists[<?php echo $i;?>].date" <?php if ($i == 0): ?>
+									required
+									<?php endif ?> type="date" class="form-control">
+								</div>
+							</div>
+						<?php endfor ?>
+						<div class="row pt-3 justify-content-center">
+							<div class="col-lg-8 col-md-10 col-sm-12 col-12">
+								<button
+								v-if="touristsQuantity <= 8"
+								v-on:click="touristsQuantity++"
+								type="button"
+								title="Добавить отдыхающего"
+								class="btn btn-outline-info w-100">
+								<i class="fa fa-plus" aria-hidden="true"></i>Добавить отдыхающего</button>
+							</div>
+						</div>
+					</template>
+
+					<template v-if="currentStep>6">
+						<template v-if="alert">
+							<div class="alert">
+								{{alert}}
+							</div>
+						</template>
+						<template v-else="!alert">
+							<div class="p-5 text-secondary text-center">
+								<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+							</div>
+						</template>
+					</template>
+
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="card-footer">
-		<div class="d-flex justify-content-around">
-			<div class="p-1">
-				<button v-on:click="currentStepBack" type="button" 
-				v-if="currentStep>1" class="btn btn-warning btn-lg text-white">
-				<i class="fa fa-chevron-left" aria-hidden="true"></i>
-				Назад
-			</button>
-			<div></div>
+		<div class="card-footer">
+			<div class="d-flex justify-content-around">
+				<div class="p-1">
+					<button v-on:click="currentStepBack" type="button" 
+					v-if="currentStep>1 && currentStep<6" class="btn btn-warning btn-lg text-white">
+						<i class="fa fa-chevron-left" aria-hidden="true"></i>
+						Назад
+					</button>
+					<div></div>
+				</div>
+
+				<div class="p-1">
+					<template v-if="currentStep < 6">
+						<button class="btn btn-warning btn-lg text-white">
+							Далее
+							<i class="fa fa-chevron-right" aria-hidden="true"></i>
+						</button>
+					</template>
+					<template v-if="currentStep == 6">
+						<button class="btn btn-warning btn-lg text-white">
+							<i class="fa fa-envelope-o" aria-hidden="true"></i>
+							Отправить заявку
+						</button>
+					</template>
+				</div>
+			</div>
 		</div>
-		<div class="p-1">
-			<button class="btn btn-warning btn-lg text-white">
-				Далее
-				<i class="fa fa-chevron-right" aria-hidden="true"></i>
-			</button>
-		</div>
-	</div>
-</div>
-</form>
-step: {{currentStep}}; season: {{season}}; direction: {{direction}} arrival: {{arrival}}
+	</form>
+	step: {{currentStep}}; season: {{season}}; direction: {{direction}} arrival: {{arrival}}
+	<pre>{{customer}}</pre>
+	<pre>{{tourists}}</pre>
 </div>
 
 <script>
@@ -195,7 +244,22 @@ step: {{currentStep}}; season: {{season}}; direction: {{direction}} arrival: {{a
 				season: false,
 				direction: false,
 				arrival: false,
+				touristsQuantity: 0,
+				customer: {},
+				tourists: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, ],
+				alert: false,
 			};
+		},
+		watch: {
+			currentStep: async function () {
+				if (this.currentStep == 7) {
+					var str = await $.post('', {
+						StepByStepFormData: 'Y',
+					});
+				re = JSON.parse(str);
+				this.alert = re.alert
+				}
+			},
 		},
 		methods: {
 			currentStepBack: function () {

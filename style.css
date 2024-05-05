@@ -2,11 +2,15 @@
  * Theme Name:  family-camp
  Author: RudenokArt
  */
-
+.main-directions-item-image,
 .main-seasons-item-image {
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
 	height: 200px;
 	display: block;
+}
+
+.main-directions-item-image {
+	height: 150px;
 }
