@@ -188,8 +188,8 @@ $steps = ACF_class::getFormSteps();
 
 					<template v-if="currentStep>6">
 						<template v-if="alert">
-							<div class="alert">
-								{{alert}}
+							<div v-bind:class="'text-center alert alert-'+alert.color">
+								{{alert.message}}
 							</div>
 						</template>
 						<template v-else="!alert">
@@ -215,6 +215,12 @@ $steps = ACF_class::getFormSteps();
 				</div>
 
 				<div class="p-1">
+					<button class="btn btn-lg btn-outline-warning" disabled>
+						{{currentStep}} / {{stepsQuantity}}
+					</button>
+				</div>
+
+				<div class="p-1">
 					<template v-if="currentStep < 6">
 						<button class="btn btn-warning btn-lg text-white">
 							Далее
@@ -229,6 +235,18 @@ $steps = ACF_class::getFormSteps();
 					</template>
 				</div>
 			</div>
+			<div class="pt-3 pb-3">
+				<div class="progress"
+			role="progressbar"
+			aria-label="Warning striped example"
+			aria-valuenow="75"
+			aria-valuemin="0"
+			aria-valuemax="100">
+			<div class="progress-bar progress-bar-striped bg-warning" v-bind:style="stepsProgress">
+			</div></div>
+			</div>
+			
+
 		</div>
 	</form>
 	step: {{currentStep}}; season: {{season}}; direction: {{direction}} arrival: {{arrival}}
@@ -240,6 +258,7 @@ $steps = ACF_class::getFormSteps();
 	var StepByStepForm = Vue.createApp({
 		data () {
 			return {
+				stepsQuantity: <?php echo sizeof($steps); ?>,
 				currentStep: 1,
 				season: false,
 				direction: false,
@@ -250,14 +269,19 @@ $steps = ACF_class::getFormSteps();
 				alert: false,
 			};
 		},
+		computed: {
+			stepsProgress: function () {
+				return 'width: '+(this.currentStep / this.stepsQuantity * 100).toFixed(0) + '%';
+			},
+		},
 		watch: {
 			currentStep: async function () {
 				if (this.currentStep == 7) {
 					var str = await $.post('', {
 						StepByStepFormData: 'Y',
 					});
-				re = JSON.parse(str);
-				this.alert = re.alert
+					re = JSON.parse(str);
+					this.alert = re.alert
 				}
 			},
 		},
@@ -275,7 +299,7 @@ $steps = ACF_class::getFormSteps();
 	StepByStepForm.mount('#step_by_step_form');
 </script>
 
-
+<hr>
 <pre><?php print_r($arrivals) ?></pre>
 <pre><?php print_r($directions) ?></pre>
 <pre><?php print_r($seasons) ?></pre>
