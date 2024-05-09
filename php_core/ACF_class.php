@@ -98,8 +98,8 @@ class ACF_class {
 			$arr[$value->ID]['ID'] = $value->ID;
 			$arr[$value->ID]['post_title'] = $value->post_title;
 			$arr[$value->ID]['post_content'] = $value->post_content;
-			// $arr[$value->ID][$value->taxonomy_slug] = $value->taxonomy_name;
-			$arr[$value->ID][$value->taxonomy_slug][$value->term_taxonomy_id] = $value->taxonomy_name;
+			$arr[$value->ID][$value->taxonomy_slug] = $value->term_taxonomy_id;
+			// $arr[$value->ID][$value->taxonomy_slug][$value->term_taxonomy_id] = $value->taxonomy_name;
 		}
 
 		return $arr;

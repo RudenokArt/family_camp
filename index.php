@@ -97,23 +97,33 @@ $steps = ACF_class::getFormSteps();
 
 					<template v-if="currentStep==4">
 						<div class="row justify-content-center">
-							<div class="col-lg-6 col-md-9 col-sm-12 col-12">
+							<div class="col-lg-8 col-md-10 col-sm-12 col-12">
 								<?php foreach ($arrivals as $key => $value): ?>
-									<div class="p-1">
-										<input 
-										value="<?php echo $value['ID']; ?>"
-										v-model="arrival"
-										type="radio"
-										class="btn-check"
-										name="arrival"
-										id="directionradio-<?php echo $value['ID']; ?>"
-										autocomplete="off" required>
-										<label
-										for="directionradio-<?php echo $value['ID']; ?>"
-										class="btn btn-lg btn-outline-warning w-100">
-										<div><?php echo $value['post_title']; ?></div>
-										<small><i><?php echo $value['post_content']; ?></i></small></label>
-									</div>
+									<template v-if="season==<?php echo $value['season'];?>&&direction==<?php echo $value['direction'] ?>">
+										<div class="p-1">
+											<input 
+											value="<?php echo $value['ID']; ?>"
+											v-model="arrival"
+											type="radio"
+											class="btn-check"
+											name="arrival"
+											id="directionradio-<?php echo $value['ID']; ?>"
+											autocomplete="off" required>
+											<label
+											for="directionradio-<?php echo $value['ID']; ?>"
+											class="btn btn-lg btn-outline-warning w-100">
+											<div class="row align-items-center">
+												<div class="col-2 p-3 h1">
+													<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+												</div>
+												<div class="col-10 text-center">
+													<div><?php echo $value['post_title']; ?></div>
+													<small><i><?php echo $value['post_content']; ?></i></small></label>
+												</div>
+											</div>											
+										</div>
+									</template>
+									
 								<?php endforeach ?>
 							</div>							
 						</div>						
@@ -237,13 +247,13 @@ $steps = ACF_class::getFormSteps();
 			</div>
 			<div class="pt-3 pb-3">
 				<div class="progress"
-			role="progressbar"
-			aria-label="Warning striped example"
-			aria-valuenow="75"
-			aria-valuemin="0"
-			aria-valuemax="100">
-			<div class="progress-bar progress-bar-striped bg-warning" v-bind:style="stepsProgress">
-			</div></div>
+				role="progressbar"
+				aria-label="Warning striped example"
+				aria-valuenow="75"
+				aria-valuemin="0"
+				aria-valuemax="100">
+				<div class="progress-bar progress-bar-striped bg-warning" v-bind:style="stepsProgress">
+				</div></div>
 			</div>
 			
 
