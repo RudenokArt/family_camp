@@ -3,8 +3,7 @@ get_header();
 $seasons = ACF_class::getSeasonsList();
 $arrivals = ACF_class::getArrivalsList();
 $directions = ACF_class::getDirectionsList();
-$steps = ACF_class::getFormSteps();
-
+$steps = ACF_class::getList('post', 'step_by_step_form');
 ?>
 <div id="step_by_step_form">
 	<form class="card mt-5" v-on:submit.prevent="currentStepNext">
@@ -21,6 +20,11 @@ $steps = ACF_class::getFormSteps();
 
 			<?php foreach ($steps as $key => $value): ?>
 				<template v-if="'step_'+currentStep=='<?php echo $value['post_name'] ?>'">
+					<?php if (isset($value['image']) and !empty($value['image'])): ?>
+						<div class="text-center">
+							<img src="<?php echo $value['image'] ?>" height="200" alt="">
+						</div>
+					<?php endif ?>
 					<div class="text-center"><?php echo $value['post_content'];?></div>
 				</template>
 			<?php endforeach ?>
@@ -259,9 +263,9 @@ $steps = ACF_class::getFormSteps();
 
 		</div>
 	</form>
-	step: {{currentStep}}; season: {{season}}; direction: {{direction}} arrival: {{arrival}}
+	<!-- step: {{currentStep}}; season: {{season}}; direction: {{direction}} arrival: {{arrival}}
 	<pre>{{customer}}</pre>
-	<pre>{{tourists}}</pre>
+	<pre>{{tourists}}</pre> -->
 </div>
 
 <script>
@@ -309,10 +313,6 @@ $steps = ACF_class::getFormSteps();
 	StepByStepForm.mount('#step_by_step_form');
 </script>
 
-<hr>
-<pre><?php print_r($arrivals) ?></pre>
-<pre><?php print_r($directions) ?></pre>
-<pre><?php print_r($seasons) ?></pre>
-<pre><?php print_r($steps) ?></pre>
+
 
 <?php get_footer(); ?>

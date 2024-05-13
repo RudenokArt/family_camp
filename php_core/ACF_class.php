@@ -4,24 +4,6 @@
  */
 class ACF_class {
 
-	public static function getFormSteps () {
-		$posts = get_posts([
-			'category_name' => 'step_by_step_form',
-			'post_status' => 'publish',
-			'numberposts' => -1,
-			'order' => 'ASC',
-			'orderby' => 'name',
-		]);
-		foreach ($posts as $key => $value) {
-			$arr[] = [
-				'ID' => $value->ID,
-				'post_title' => $value->post_title,
-				'post_content' => sanitize_text_field($value->post_content),
-				'post_name' => $value->post_name,
-			];
-		}
-		return $arr;
-	}
 
 	public static function getDirectionsList () {
 		$directions = self::wpDbRe(
@@ -106,7 +88,7 @@ class ACF_class {
 	}
 
 	
-	public static function getList ($post_type, $orderby='date', $order='ASC') {
+	public static function getList ($post_type, $category=0, $orderby='date', $order='ASC') {
 
 		$posts = get_posts([
 			'post_type' => $post_type,
@@ -114,6 +96,7 @@ class ACF_class {
 			'numberposts' => -1,
 			'orderby' => $orderby,
 			'order' => $order,
+			'category' => $category,
 		]);
 
 		$postsStrIds = '';
@@ -147,6 +130,7 @@ class ACF_class {
 			$item['ID'] = $post->ID;
 			$item['post_title'] = $post->post_title;
 			$item['post_content'] = sanitize_text_field($post->post_content);
+			$item['post_name'] = $post->post_name;
 			
 			// $item['post_content'] = $post->post_content;
 			foreach ($metadata as $key => $value) {
@@ -160,6 +144,7 @@ class ACF_class {
 			}
 			$arr[] = $item;
 		}
+
 		if (isset($arr)) {
 			return $arr;
 		}
